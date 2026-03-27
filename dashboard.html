@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpenseTrack — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="dashboard">
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">My <span>Dashboard</span></h1>
+          <p style="font-size:13px; color:var(--muted); margin-top:4px" id="dateLabel"></p>
+        </div>
+        <div class="topbar-actions">
+          <a href="add-expense.html" class="btn btn-primary">➕ Add Expense</a>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon teal">💰</div>
+          <div class="stat-label">Total Spent</div>
+          <div class="stat-value teal" id="statTotal">₹0.00</div>
+          <div class="stat-sub" id="statCount">0 entries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">📅</div>
+          <div class="stat-label">This Month</div>
+          <div class="stat-value green" id="statMonth">₹0.00</div>
+          <div class="stat-sub" id="statMonthCount">0 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon warn">📊</div>
+          <div class="stat-label">Avg per Entry</div>
+          <div class="stat-value warn" id="statAvg">₹0.00</div>
+          <div class="stat-sub">average spend</div>
+        </div>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-section">
+        <div class="section-header">
+          <div class="section-title">📈 6-Month Spending Overview</div>
+        </div>
+        <div class="chart-bars" id="chartBars"></div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-section">
+        <div class="section-header">
+          <div class="section-title">🧾 All Expenses</div>
+          <div style="display:flex; gap:10px; align-items:center">
+            <label style="font-size:12px; color:var(--muted)">Filter:</label>
+            <select class="filter-select" id="catFilter">
+              <option value="All">All Categories</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="expense-table">
+          <thead>
+            <tr>
+              <th>Expense</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="expenseBody"></tbody>
+        </table>
+
+        <div class="total-row">
+          <span>Total:</span>
+          <span class="total-amount" id="tableTotal">₹0.00</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast"></div>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById("dateLabel").textContent =
+      new Date().toLocaleDateString("en-IN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+  </script>
+</body>
+</html>

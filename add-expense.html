@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpenseTrack — Add Expense</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="add-expense">
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Add <span>Expense</span></h1>
+          <p style="font-size:13px; color:var(--muted); margin-top:4px">
+            Record a new expense entry
+          </p>
+        </div>
+        <div class="topbar-actions">
+          <a href="dashboard.html" class="btn btn-ghost">← Back to Dashboard</a>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="addExpenseForm" autocomplete="off">
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="expName">Expense Name *</label>
+              <input type="text" id="expName" class="form-control"
+                     placeholder="e.g. Lunch, Bus fare..." required />
+            </div>
+
+            <div class="form-group">
+              <label for="expAmount">Amount (₹) *</label>
+              <input type="number" id="expAmount" class="form-control"
+                     placeholder="0.00" min="0.01" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+              <label for="expCategory">Category *</label>
+              <select id="expCategory" class="form-control" required>
+                <option value="" disabled selected>Select category</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="expDate">Date *</label>
+              <input type="date" id="expDate" class="form-control" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="expNote">Note (optional)</label>
+              <textarea id="expNote" class="form-control"
+                        placeholder="Any additional details..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Save Expense</button>
+            <button type="reset" class="btn btn-ghost">↺ Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RECENT 5 EXPENSES (quick view) -->
+      <div class="table-section" style="margin-top:28px; max-width:680px">
+        <div class="section-header">
+          <div class="section-title">🕒 Recent Entries</div>
+          <a href="dashboard.html" style="font-size:12px; color:var(--teal); text-decoration:none">
+            View all →
+          </a>
+        </div>
+        <table class="expense-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Amount</th><th>Category</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="recentBody"></tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast"></div>
+  <script src="script.js"></script>
+  <script>
+    // Render recent 5 after page load
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        const tbody = document.getElementById("recentBody");
+        const list = getExpenses().slice(0, 5);
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:28px; color:var(--muted)">No expenses yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = list.map(e => `
+          <tr>
+            <td>${e.name}</td>
+            <td style="color:var(--teal); font-weight:600">${formatCurrency(e.amount)}</td>
+            <td><span class="category-badge ${badgeClass(e.category)}">${CAT_ICONS[e.category]||"📦"} ${e.category}</span></td>
+            <td style="color:var(--muted)">${formatDate(e.date)}</td>
+          </tr>
+        `).join("");
+      }, 100);
+    });
+  </script>
+</body>
+</html>
